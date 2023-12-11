@@ -1,0 +1,288 @@
+//Access Browser onload event
+window.addEventListener('load',()=>{
+    
+    //Call table refresh function
+    refreshCourseTable();
+
+    //Call form refresh function
+    refreshCourseForm();
+});
+
+// ********* LISTENERS *********
+const courseTimePattern= '^([0-9]{2}[:][0-9]{2}[\\s][A,P][M])$';
+const courseFeePattern= '^([0-9]{3,5}[.][0-9]{2})$';
+
+selectGrade.addEventListener('change',()=>{
+    selectDFieldValidator(selectGrade,'course','gradeId');
+});
+
+selectSubject.addEventListener('change',()=>{
+    selectDFieldValidator(selectSubject,'course','subjectId');
+});
+
+selectDay.addEventListener('change',()=>{
+    selectFieldValidator(selectDay,'course','courseDay');
+});
+
+textCourseTimeFrom.addEventListener('keyup',()=>{
+    textFieldValidator(textCourseTimeFrom,courseTimePattern,'course','fromTime');
+});
+
+textCourseTimeTo.addEventListener('keyup',()=>{
+    textFieldValidator(textCourseTimeTo,courseTimePattern,'course','toTime');
+});
+
+textFee.addEventListener('keyup',()=>{
+    textFieldValidator(textFee,courseFeePattern,'course','fee');
+});
+
+checkboxFixedTime.addEventListener('change',()=>{
+    checkBoxValidator(checkboxFixedTime,'course','isFixedTime',true,false,labelCBFixedTime,'Fixed Time','Non-Fixed Time');
+});
+
+btnReset.addEventListener('click',()=>{
+    refreshCourseForm();
+});
+
+btnUpdate.addEventListener('click',()=>{
+    updateCourse();
+});
+
+btnAdd.addEventListener('click',()=>{
+    addCourse();
+});
+
+// ********* RESET *********
+//function for refresh form area
+const refreshCourseForm=()=>{
+    //create empty course object
+    course = {};
+    course.isFixedTime = true;
+
+    //get data for dynamic lists
+    grades = [{id:1,name:'Grade 9'},{id:2,name:'Grade 10'},{id:3,name:'Grade 11'}];
+    fillDataIntoSelect(selectGrade,'Select Grade',grades,'name');
+
+    subjects = [{id:1,name:'English'},{id:2,name:'Sinhala'},{id:3,name:'Math'}];
+    fillDataIntoSelect(selectSubject,'Select Subject',subjects,'name');
+
+    //set elements empty
+    selectDay.value = '';
+    textCourseTimeFrom.value = '';
+    textCourseTimeTo.value = '';
+    textFee.value = '';
+    checkboxFixedTime.checked = true;
+    labelCBFixedTime.innerText = 'Fixed Time';
+}
+
+//function for refresh table record
+const refreshCourseTable = ()=>{
+    //create array for store employee data list
+    employees = [
+        {id:1,gradeId:{id:1,name:'Grade 9'},subjectId:{id:1,name:'English'},courseDay:'Tuesday',fromTime:'08:00 AM',toTime:'10.30 AM',fee:'1300.00',isFixedTime:false},
+        {id:2,gradeId:{id:2,name:'Grade 10'},subjectId:{id:2,name:'Sinhala'},courseDay:'Monday',fromTime:'10:00 AM',toTime:'11.30 AM',fee:'1500.00',isFixedTime:true},
+        {id:3,gradeId:{id:2,name:'Grade 10'},subjectId:{id:3,name:'Math'},courseDay:'Friday',fromTime:'06:00 PM',toTime:'08:00 PM',fee:'2500.00',isFixedTime:false},
+        {id:4,gradeId:{id:3,name:'Grade 11'},subjectId:{id:2,name:'Sinhala'},courseDay:'Sunday',fromTime:'02:00 PM',toTime:'04:00 PM',fee:'1500.00',isFixedTime:true}
+    ];
+    
+    // employees = ajaxGetRequest("/employee/findall");
+    
+
+    //object count = table column count
+    //String - number/string/date
+    //function - object/array/boolean 
+    const displayProperty = [   {property:getGrade,datatype:'function'},
+                                {property:getSubject,datatype:'function'} ]
+    
+    
+    //call the function (tableID,dataList,display property list, refill function name, delete function name, print function name, button visibilitys)
+    fillDataIntoTable(tblCourses,employees,displayProperty,refillCourse,deleteCourse,printCourse,true);
+
+}
+
+const getGrade=(rowObject)=>{
+    return rowObject.gradeId.name;
+}
+
+const getSubject=(rowObject)=>{
+    return rowObject.subjectId.name;
+}
+
+// ********* TABLE OPERATIONS *********
+//delete course record function
+const deleteCourse = (rowObject,rowId) =>{
+    const userConfirm = confirm('Are you sure to delete following class \n'+rowObject.gradeId.name+' - '+rowObject.subjectId.name);
+
+    if(userConfirm){
+        //response from backend ...
+        let serverResponse = 'OK'; //ajaxRequestBody("/employee","DELETE",rowObject); // url,method,object
+            //4. check back end response
+            if(serverResponse == "OK"){
+                alert('Delete sucessfully..! \n'+serverResponse);
+                //Call table refresh function
+                refreshCourseTable();
+
+                //Call form refresh function
+                refreshCourseForm();
+            }else{
+                alert('Save not sucessfully..! have some errors \n'+serverResponse);
+            }
+    }
+}
+
+//create refill function
+const refillCourse=(rowObject,rowId)=>{
+    // employee = rowObject;
+    course = JSON.parse(JSON.stringify(rowObject));
+    oldcourse = JSON.parse(JSON.stringify(rowObject));
+
+    selectDay.value = course.courseDay;
+    textCourseTimeFrom.value = course.fromTime;
+    textCourseTimeTo.value = course.toTime;
+    textFee.value = course.fee;
+
+    if(course.isFixedTime){
+        checkboxFixedTime.checked = true;
+        labelCBFixedTime.innerText = 'Fixed Time';
+    }else{
+        checkboxFixedTime.checked = false;
+        labelCBFixedTime.innerText = 'Non-Fixed Time';
+    }
+
+    // Select Grade
+    fillDataIntoSelect(selectGrade,'Select Grade',grades,'name',course.gradeId.name);
+    
+    // Select Subject
+    fillDataIntoSelect(selectSubject,'Select Subject',subjects,'name',course.subjectId.name);
+}
+
+//create print function
+const printCourse=(ob,rowId)=>{
+    
+}
+
+// ********* FORM OPERATIONS *********
+const checkErrors = ()=>{
+    //need to check all required property fields
+    let error = '';
+    if(course.gradeId == null){
+        error = error+'Please Select Grade...!\n';
+        selectGrade.style.border = '2px solid red';
+    }
+    if(course.subjectId == null){
+        error = error+'Please Select Subject...!\n';
+        selectSubject.style.border = '2px solid red';
+    }
+    if(course.courseDay == null){
+        error = error+'Please Select Day...!\n';
+        selectDay.style.border = '2px solid red';
+    }
+    if(course.fromTime == null){
+        error = error+'Please Enter From time...!\n';
+        textCourseTimeFrom.style.border = '2px solid red';
+    }
+    if(course.toTime == null){
+        error = error+'Please Enter To time...!\n';
+        textCourseTimeTo.style.border = '2px solid red';
+    }
+    if(course.fee == null){
+        error = error+'Please Enter Fee...!\n';
+        textFee.style.border = '2px solid red';
+    }
+
+    return error;   
+}
+
+const checkUpdates =()=>{
+    let updates = "";
+
+    if(oldcourse.gradeId.name != course.gradeId.name){
+        updates = updates + "Grade has changed \n";
+    }
+
+    if(oldcourse.subjectId.name != course.subjectId.name){
+        updates = updates + "Subject has changed \n";
+    }
+
+    if(oldcourse.courseDay != course.courseDay){
+        updates = updates + "Class Day has changed \n";
+    }
+
+    if(oldcourse.fromTime != course.fromTime || oldcourse.toTime != course.toTime){
+        updates = updates + "Class Time has changed \n";
+    }
+
+    if(oldcourse.fee != course.fee){
+        updates = updates + "Class Fee has changed \n";
+    }
+
+    return updates;
+}
+
+const addCourse = ()=>{
+    //1. need to check form errors ---> checkError() 
+    let formErrors = checkErrors();
+    if(formErrors == ''){
+        // alert('No errors!');
+        //2. need to get user confirmation
+        let userConfirm = window.confirm('Are you sure to add following course..?\n'
+                                        + '\nGrade : '+course.gradeId.name 
+                                        + '\nSubject : '+course.subjectId.name
+                                        + '\nClass Day : '+course.courseDay
+                                        + '\nFrom : '+course.fromTime
+                                        + '\nTo : '+course.toTime
+                                        + '\nFee : '+course.fee
+                                        + '\nFixed Date : '+course.isFixedTime);
+
+        if(userConfirm){
+            console.log('Ok saved!');
+        //3. pass data into back end
+            // let serverResponse = ajaxRequestBody("/employee","POST",employee); // url,method,object
+        
+            //4. check back end response
+            // if(new RegExp('^[0-9]{8}$').test(serverResponse)){
+            //     alert('Save sucessfully..! '+serverResponse);
+            //     //need to refresh table and form
+            //     refreshTable();
+            //     refreshEmployeeForm();
+
+            //     //need to hide modal
+            //     $('#modalEmployeeAddForm').modal('hide');
+            // }else{
+            //     alert('Save not sucessfully..! have some errors \n'+serverResponse);
+            // }
+        }
+        
+    }else{
+        alert('Error\n' + formErrors);
+    }
+}
+
+const updateCourse = () =>{
+    let errors =  checkErrors();
+    if(errors == ""){
+        let updates = checkUpdates();
+        if(updates != ""){
+            let userConfirm = confirm("Are you sure to update following changes...?\n"+updates);
+            if(userConfirm){
+                let updateSeriveResponse = 'OK'; //ajaxRequestBody("/employee","PUT",employee);
+                if(updateSeriveResponse == "OK"){
+                    alert('Update sucessfully..! ');
+                    //Call table refresh function
+                    refreshCourseTable();
+
+                    //Call form refresh function
+                    refreshCourseForm();
+                }else{
+                    alert('Update not sucessfully..! have some errors \n'+updateSeriveResponse);
+                }
+            }
+        }else{
+            alert("Nothing to Update...!");
+        }
+    }else{
+        alert("form has following errors \n"+errors);
+    }
+}
+
+
