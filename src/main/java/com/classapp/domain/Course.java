@@ -27,29 +27,29 @@ public class Course {
 	@Column(name = "id",unique = true)
 	private Integer id;
 	
-	@Column(name = "default_day")
+	@Column(name = "course_day")
 	@NotNull
-	private String defaultDay;
+	private String courseDay;
 	
 	@Column(name = "from_time")
 	@NotNull
-	private LocalTime fromTime;
+	private String fromTime;
 	
 	@Column(name = "to_time")
 	@NotNull
-	private LocalTime toTime;
+	private String toTime;
 	
-	@Column(name = "default_fee")
+	@Column(name = "fee")
 	@NotNull
-	private double defaultFee;
+	private double fee;
 	
-	@Column(name = "has_fix_time")
+	@Column(name = "has_fixed_time")
 	@NotNull
-	private boolean hasFixTime; 
+	private boolean hasFixedTime; 
 	
-	@Column(name = "is_active")
+	@Column(name = "active")
 	@NotNull
-	private boolean isActive;
+	private boolean active;
 	
 	@Column(name = "added_datetime")
 	@NotNull
@@ -58,7 +58,7 @@ public class Course {
 	@Column(name = "lastupdated_datetime")
 	private LocalDateTime lastUpdateDateTime;
 	
-	@Column(name = "deleted_datetime")
+	@Column(name = "deleted_datetime")   
 	private LocalDateTime deletedDateTime;
 	
 	@ManyToOne
@@ -71,5 +71,5 @@ public class Course {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id",referencedColumnName = "id")
-	private Integer userId;
+	private User userId;
 }

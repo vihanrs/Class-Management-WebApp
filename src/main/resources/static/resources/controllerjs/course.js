@@ -37,7 +37,7 @@ textFee.addEventListener('keyup',()=>{
 });
 
 checkboxFixedTime.addEventListener('change',()=>{
-    checkBoxValidator(checkboxFixedTime,'course','isFixedTime',true,false,labelCBFixedTime,'Fixed Time','Non-Fixed Time');
+    checkBoxValidator(checkboxFixedTime,'course','hasFixedTime',true,false,labelCBFixedTime,'Fixed Time','Non-Fixed Time');
 });
 
 btnReset.addEventListener('click',()=>{
@@ -57,7 +57,23 @@ btnAdd.addEventListener('click',()=>{
 const refreshCourseForm=()=>{
     //create empty course object
     course = {};
-    course.isFixedTime = true;
+    course.hasFixedTime = true;
+    course.userId = {
+        id: 1,
+        firstName: "vihan",
+        lastName: "rojitha",
+        gender: "male",
+        contact: "0716024065",
+        email: "vihanvrs@gmail.com",
+        addedDateTime: "2023-10-21T14:36:12",
+        lastUpdatedDateTime: null,
+        deletedDateTime: null,
+        role_id: {
+          id: 1,
+          name: "Admin",
+          active: true
+        }
+    }
 
     //get data for dynamic lists
     grades = [{id:1,name:'Grade 9'},{id:2,name:'Grade 10'},{id:3,name:'Grade 11'}];
@@ -73,17 +89,25 @@ const refreshCourseForm=()=>{
     textFee.value = '';
     checkboxFixedTime.checked = true;
     labelCBFixedTime.innerText = 'Fixed Time';
+
+    selectGrade.style.border = '1px solid #ced4da';
+    selectSubject.style.border = '1px solid #ced4da';
+    selectDay.style.border = '1px solid #ced4da';
+    textCourseTimeFrom.style.border = '1px solid #ced4da';
+    textCourseTimeTo.style.border = '1px solid #ced4da';
+    textFee.style.border = '1px solid #ced4da';
 }
 
 //function for refresh table record
 const refreshCourseTable = ()=>{
     //create array for store employee data list
-    employees = [
-        {id:1,gradeId:{id:1,name:'Grade 9'},subjectId:{id:1,name:'English'},courseDay:'Tuesday',fromTime:'08:00 AM',toTime:'10.30 AM',fee:'1300.00',isFixedTime:false},
-        {id:2,gradeId:{id:2,name:'Grade 10'},subjectId:{id:2,name:'Sinhala'},courseDay:'Monday',fromTime:'10:00 AM',toTime:'11.30 AM',fee:'1500.00',isFixedTime:true},
-        {id:3,gradeId:{id:2,name:'Grade 10'},subjectId:{id:3,name:'Math'},courseDay:'Friday',fromTime:'06:00 PM',toTime:'08:00 PM',fee:'2500.00',isFixedTime:false},
-        {id:4,gradeId:{id:3,name:'Grade 11'},subjectId:{id:2,name:'Sinhala'},courseDay:'Sunday',fromTime:'02:00 PM',toTime:'04:00 PM',fee:'1500.00',isFixedTime:true}
-    ];
+    // courses = [
+    //     {id:1,gradeId:{id:1,name:'Grade 9'},subjectId:{id:1,name:'English'},courseDay:'Tuesday',fromTime:'08:00 AM',toTime:'10.30 AM',fee:'1300.00',isFixedTime:false},
+    //     {id:2,gradeId:{id:2,name:'Grade 10'},subjectId:{id:2,name:'Sinhala'},courseDay:'Monday',fromTime:'10:00 AM',toTime:'11.30 AM',fee:'1500.00',isFixedTime:true},
+    //     {id:3,gradeId:{id:2,name:'Grade 10'},subjectId:{id:3,name:'Math'},courseDay:'Friday',fromTime:'06:00 PM',toTime:'08:00 PM',fee:'2500.00',isFixedTime:false},
+    //     {id:4,gradeId:{id:3,name:'Grade 11'},subjectId:{id:2,name:'Sinhala'},courseDay:'Sunday',fromTime:'02:00 PM',toTime:'04:00 PM',fee:'1500.00',isFixedTime:true}
+    // ];
+    courses = ajaxGetRequest("/course/findall");
     
     // employees = ajaxGetRequest("/employee/findall");
     
@@ -96,7 +120,7 @@ const refreshCourseTable = ()=>{
     
     
     //call the function (tableID,dataList,display property list, refill function name, delete function name, print function name, button visibilitys)
-    fillDataIntoTable(tblCourses,employees,displayProperty,refillCourse,deleteCourse,printCourse,true);
+    fillDataIntoTable(tblCourses,courses,displayProperty,refillCourse,deleteCourse,printCourse,true);
 
 }
 
@@ -115,7 +139,7 @@ const deleteCourse = (rowObject,rowId) =>{
 
     if(userConfirm){
         //response from backend ...
-        let serverResponse = 'OK'; //ajaxRequestBody("/employee","DELETE",rowObject); // url,method,object
+        let serverResponse = ajaxRequestBody("/course","DELETE",rowObject); // url,method,object
             //4. check back end response
             if(serverResponse == "OK"){
                 alert('Delete sucessfully..! \n'+serverResponse);
@@ -132,7 +156,6 @@ const deleteCourse = (rowObject,rowId) =>{
 
 //create refill function
 const refillCourse=(rowObject,rowId)=>{
-    // employee = rowObject;
     course = JSON.parse(JSON.stringify(rowObject));
     oldcourse = JSON.parse(JSON.stringify(rowObject));
 
@@ -141,7 +164,7 @@ const refillCourse=(rowObject,rowId)=>{
     textCourseTimeTo.value = course.toTime;
     textFee.value = course.fee;
 
-    if(course.isFixedTime){
+    if(course.hasFixedTime){
         checkboxFixedTime.checked = true;
         labelCBFixedTime.innerText = 'Fixed Time';
     }else{
@@ -216,6 +239,10 @@ const checkUpdates =()=>{
         updates = updates + "Class Fee has changed \n";
     }
 
+    if(oldcourse.hasFixedTime != course.hasFixedTime){
+        updates = updates + "Fixed Time has changed \n";
+    }
+
     return updates;
 }
 
@@ -232,25 +259,23 @@ const addCourse = ()=>{
                                         + '\nFrom : '+course.fromTime
                                         + '\nTo : '+course.toTime
                                         + '\nFee : '+course.fee
-                                        + '\nFixed Date : '+course.isFixedTime);
+                                        + '\nFixed Date : '+course.hasFixedTime);
 
         if(userConfirm){
-            console.log('Ok saved!');
         //3. pass data into back end
-            // let serverResponse = ajaxRequestBody("/employee","POST",employee); // url,method,object
+            let serverResponse = ajaxRequestBody("/course","POST",course); // url,method,object
         
             //4. check back end response
-            // if(new RegExp('^[0-9]{8}$').test(serverResponse)){
-            //     alert('Save sucessfully..! '+serverResponse);
-            //     //need to refresh table and form
-            //     refreshTable();
-            //     refreshEmployeeForm();
+            if(serverResponse == "OK"){
+                alert('Save sucessfully..! '+serverResponse);
+                //Call table refresh function
+                refreshCourseTable();
 
-            //     //need to hide modal
-            //     $('#modalEmployeeAddForm').modal('hide');
-            // }else{
-            //     alert('Save not sucessfully..! have some errors \n'+serverResponse);
-            // }
+                //Call form refresh function
+                refreshCourseForm();
+            }else{
+                alert('Save not sucessfully..! have some errors \n'+serverResponse);
+            }
         }
         
     }else{
@@ -265,7 +290,7 @@ const updateCourse = () =>{
         if(updates != ""){
             let userConfirm = confirm("Are you sure to update following changes...?\n"+updates);
             if(userConfirm){
-                let updateSeriveResponse = 'OK'; //ajaxRequestBody("/employee","PUT",employee);
+                let updateSeriveResponse = ajaxRequestBody("/course","PUT",course);
                 if(updateSeriveResponse == "OK"){
                     alert('Update sucessfully..! ');
                     //Call table refresh function
