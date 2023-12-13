@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <!-- link bootstrap css -->
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" />
+    <!-- link bootstrap js -->
+    <script src="resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- fontawsome -->
+    <link rel="stylesheet" href="resources/fontawesome-6.4.2/css/all.css" />
+
+    <!-- button css -->
+    <link rel="stylesheet" href="resources/css/button.css" />
+
+    <!-- link employee js file -->
+    <script src="resources/js/jquery.js"></script>
+    
+    <!-- link tablefunction js file -->
+    <script src="resources/js/validation.js"></script>
+    <!-- link tablefunction js file -->
+    <script src="resources/js/tablefunctions.js"></script>
+    <!-- link common js file -->
+    <script src="resources/js/common.js"></script>
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- title area start  -->
+        <div class="row p-3">
+            <div class="col-12 text-center title-div">
+            <h2 class="h2">
+                <i class="fa-solid fa-user-tie pe-3"></i>Student Management
+            </h2>
+            </div>
+        </div>
+      <!-- title area end  -->
+    </div>
+    <div class="row">
+        <!-- form area start -->
+        <div class="col-md-4 ms-5 pe-3">
+            <form onsubmit="return false">
+                <!-- fullname  -->
+                <div class="row">
+                    <label for="textFullName" class="form-label fw-bold">Full Name :<span class="text-danger"> * </span></label>
+                    <div class="col-md-12">
+                        <input type="text" placeholder="Enter Full Name" class="form-control" id="textFullName" required>
+                    </div>
+                </div>
+                <!-- calling name -->
+                <div class="row">
+                    <div class="col-12">
+                        <label for="textCallingName" class="form-label fw-bold">
+                            Calling Name : <span class="text-danger"> * </span>
+                        </label>
+                        <input type="text" placeholder="Enter Calling Name" list="callingname" class="form-select" id="textCallingName" required>
+                        <datalist id="callingname">
+                            <option value="Part 1"></option>
+                            <option value="Part 2"></option>
+                            <option value="Part 3"></option>
+                            <option value="Part 4"></option>
+                        </datalist>
+                    </div>
+                </div>
+                <!-- gender  -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <label for="radioGender" class="form-label fw-bold">
+                                Gender : <span class="text-danger"> * </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="gender" class="from-check-input" value="male" id="radioGenderMale" >
+                            <label for="radioGenderMale" class="form-check-label fw-bold">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="gender" class="from-check-input" value="female" id="radioGenderFemale">
+                            <label for="radioGenderFemale" class="form-check-label fw-bold">Female</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- dob  -->
+                <div class="col-12">
+                    <label for="dateDOB" class="form-label fw-bold">
+                        Date of Birth : <span class="text-danger"> * </span>
+                    </label>
+                    <input type="date" id="dateDOB" class="form-control " required>
+                </div>
+                <!-- mobile no  -->
+                <div class="col-12">
+                    <label for="textMobileNo" class="form-label fw-bold">
+                        Mobile No : <span class="text-danger"> * </span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-mobile-retro"></i></span>
+                        <input type="text" placeholder="Enter Mobile No" id="textMobileNo" class="form-control" required>
+                    </div>
+                </div>
+                <!-- mobile no(2) -->
+                <div class="col-12">
+                    <label for="textOtherContact" class="form-label fw-bold">
+                        Other Contact No : <span class="text-secondary fst-italic"> (optional) </span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-mobile-retro"></i></span>
+                        <input type="text" placeholder="Enter Mobile No" id="textOtherContact" class="form-control">
+                    </div>
+                </div>
+                <!-- buttons -->
+                <div class="row mt-2">
+                    <div class="col-lg-4 text-center">
+                        <button type="button" class="btn fw-bold btn-clear" id="btnReset"><i class="fa-solid fa-recycle me-2"></i>Clear</button>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <button type="submit" class="btn fw-bold btn-update" id="btnUpdate"><i class="fa-solid fa-gears me-2"></i>Update</button>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <button type="submit" class="btn fw-bold btn-add" id="btnAdd"><i class="fa-solid fa-square-plus me-2"></i>Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- form area end -->
+
+        <!-- table area start  -->
+        <div class="col-md-7 ms-3 ">
+            <table class="table table-striped table-bordered text-center" id="tblStudents">
+                <thead class="table-info">
+                    <tr>
+                        <th> # </th>
+                        <th> Calling Name </th>
+                        <th> Mobile No</th>
+                        <th> Other Contact No</th>
+                        <th class="modify-button col-4"> Modify</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Vihan</td>
+                        <td>0716024065</td>
+                        <td>0752856545</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-success"> <i class="fa-solid fa-eye"></i></button>
+                            <button type="button" class="btn btn-outline-warning"><i class="fa-solid fa-pen-square"></i></button>
+                            <button type="button" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- table area end  -->
+    </div>
+
+    <!-- link course js file -->
+    <script src="resources/controllerjs/student.js"></script>
+</body>
+</html>

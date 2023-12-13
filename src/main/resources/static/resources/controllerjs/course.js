@@ -108,9 +108,6 @@ const refreshCourseTable = ()=>{
     //     {id:4,gradeId:{id:3,name:'Grade 11'},subjectId:{id:2,name:'Sinhala'},courseDay:'Sunday',fromTime:'02:00 PM',toTime:'04:00 PM',fee:'1500.00',isFixedTime:true}
     // ];
     courses = ajaxGetRequest("/course/findall");
-    
-    // employees = ajaxGetRequest("/employee/findall");
-    
 
     //object count = table column count
     //String - number/string/date
