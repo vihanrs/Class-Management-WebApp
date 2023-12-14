@@ -57,11 +57,11 @@ const selectFieldValidator = (fieldId,object,property)=>{
 }
 
 //generate calling name values
-const generateCallingNameValues = ()=>{
-    const callingNames = document.querySelector('#callingname');
+const generateCallingNameValues = (fullNameField,DataListId)=>{
+    const callingNames = document.getElementById(DataListId);
     callingNames.innerHTML = '';
 
-    callingNamePartList = txtFullName.value.split(' ');
+    callingNamePartList = fullNameField.value.split(' ');
     callingNamePartList.forEach(item => {
         const option = document.createElement('option');
         option.value = item;
@@ -88,7 +88,7 @@ const callingNameValidator=(fieldId,dataList)=>{
     }
 }
 */
-const callingNameValidator=(field)=>{
+const callingNameValidator=(field,object,property)=>{
     const callingNameValue = field.value;
     cNameExt = false;
 
@@ -103,10 +103,10 @@ const callingNameValidator=(field)=>{
 
     if(cNameExt){
         field.style.border = '2px solid green';
-        employee.callingName = callingNameValue;
+        window[object][property]= callingNameValue;
     }else{
         field.style.border = '1px solid red';
-        employee.callingName = null;
+        window[object][property] = null;
     }
 }
 

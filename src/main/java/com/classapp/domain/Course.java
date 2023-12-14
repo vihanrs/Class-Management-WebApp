@@ -1,8 +1,6 @@
 package com.classapp.domain;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,7 +54,7 @@ public class Course {
 	private LocalDateTime addedDateTime;
 	
 	@Column(name = "lastupdated_datetime")
-	private LocalDateTime lastUpdateDateTime;
+	private LocalDateTime lastUpdatedDateTime;
 	
 	@Column(name = "deleted_datetime")   
 	private LocalDateTime deletedDateTime;

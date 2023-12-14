@@ -20,7 +20,7 @@ const mobileNoPattern= '^[0][7][01245678][0-9]{7}$';
 
 textFullName.addEventListener('keyup',()=>{
     textFieldValidator(textFullName,fullNamePattern,'student','fullName');
-    generateCallingNameValues(textFullName);
+    generateCallingNameValues(textFullName,'callingname');
 });
 
 textCallingName.addEventListener('change',()=>{
@@ -44,11 +44,11 @@ dateDOB.addEventListener('change',()=>{
 });
 
 textMobileNo.addEventListener('keyup',()=>{
-    textFieldValidator(textMobileNo,mobileNoPattern,'student','mobileNo');
+    textFieldValidator(textMobileNo,mobileNoPattern,'student','contact');
 });
 
 textOtherContact.addEventListener('keyup',()=>{
-    textFieldValidator(textOtherContact,mobileNoPattern,'student','otherNo');
+    textFieldValidator(textOtherContact,mobileNoPattern,'student','contactTwo');
 });
 
 btnReset.addEventListener('click',()=>{
@@ -111,24 +111,19 @@ const refreshStudentForm=()=>{
 //function for refresh table record
 const refreshStudentTable = ()=>{
     //create array for store employee data list
-    student = [
-        {id:1,fullName:'Vihan Rojitha',callingName:'Vihan',gender:'Male',dob:'1998-02-17',mobileNo:'0716024650',otherNo:'0754825145'},
-        {id:1,fullName:'Nimal Silva',callingName:'Nimal',gender:'Male',dob:'1998-02-17',mobileNo:'0785845268',otherNo:'0756942815'},
-        {id:1,fullName:'Dasuni Perera',callingName:'Dasuni',gender:'Female',dob:'1998-02-17',mobileNo:'0716024650',otherNo:'0701254967'},
-        {id:1,fullName:'Kelum Gamage',callingName:'Kelum',gender:'Male',dob:'1998-02-17',mobileNo:'0768542599',otherNo:'0768542514'}
-    ];
-    // students = ajaxGetRequest("/student/findall");
+
+    students = ajaxGetRequest("/student/findall");
 
     //object count = table column count
     //String - number/string/date
     //function - object/array/boolean 
     const displayProperty = [   {property:'callingName',datatype:'String'},
-                                {property:'mobileNo',datatype:'String'},
-                                {property:'otherNo',datatype:'String'} ]
+                                {property:'contact',datatype:'String'},
+                                {property:'contactTwo',datatype:'String'} ]
     
     
     //call the function (tableID,dataList,display property list, refill function name, delete function name, print function name, button visibilitys)
-    fillDataIntoTable(tblStudents,student,displayProperty,refillStudent,deleteStudent,printStudent,true);
+    fillDataIntoTable(tblStudents,students,displayProperty,refillStudent,deleteStudent,printStudent,true);
 
 }
 
@@ -139,7 +134,7 @@ const deleteStudent = (rowObject,rowId) =>{
 
     if(userConfirm){
         //response from backend ...
-        let serverResponse = 'OK'; //ajaxRequestBody("/student","DELETE",rowObject); // url,method,object
+        let serverResponse = ajaxRequestBody("/student","DELETE",rowObject); // url,method,object
             //4. check back end response
             if(serverResponse == "OK"){
                 alert('Delete sucessfully..! \n'+serverResponse);
@@ -157,10 +152,11 @@ const refillStudent=(rowObject,rowId)=>{
     oldstudent = JSON.parse(JSON.stringify(rowObject));
 
     textFullName.value = student.fullName;
+    generateCallingNameValues(textFullName,'callingname');
     textCallingName.value = student.callingName;
     dateDOB.value = student.dob;
-    textMobileNo.value = student.mobileNo;
-    textOtherContact.value = student.otherNo;
+    textMobileNo.value = student.contact;
+    textOtherContact.value = student.contactTwo;
     
     if(student.gender == 'Male'){
         radioGenderMale.checked = true;
@@ -168,8 +164,6 @@ const refillStudent=(rowObject,rowId)=>{
         radioGenderFemale.checked = true;
     }
     
-    // get other calling name suggesions
-    generateCallingNameValues(textFullName);
 }
 
 //create print function
@@ -197,7 +191,7 @@ const checkErrors = ()=>{
         error = error+'Please Enter Date of Birth...!\n';
         dateDOB.style.border = '2px solid red';
     }
-    if(student.mobileNo == null){
+    if(student.contact == null){
         error = error+'Please Enter Mobile No...!\n';
         textMobileNo.style.border = '2px solid red';
     }
@@ -224,11 +218,11 @@ const checkUpdates =()=>{
         updates = updates + "Date Of Birth has changed \n";
     }
 
-    if(oldstudent.mobileNo != student.mobileNo){
+    if(oldstudent.contact != student.contact){
         updates = updates + "Mobile No has changed \n";
     }
 
-    if(oldstudent.otherNo != student.otherNo){
+    if(oldstudent.contactTwo != student.contactTwo){
         updates = updates + "Other Contact No has changed \n";
     }
 
@@ -246,11 +240,11 @@ const addCourse = ()=>{
                                         + '\nCalling Name : '+student.callingName
                                         + '\nGender : '+student.gender
                                         + '\nDate of Birth : '+student.dob
-                                        + '\nMobile No : '+student.mobileNo);
+                                        + '\nMobile No : '+student.contact);
 
         if(userConfirm){
         //3. pass data into back end
-            let serverResponse = 'OK'; //ajaxRequestBody("/student","POST",student); // url,method,object
+            let serverResponse = ajaxRequestBody("/student","POST",student); // url,method,object
         
             //4. check back end response
             if(serverResponse == "OK"){
@@ -274,7 +268,7 @@ const updateCourse = () =>{
         if(updates != ""){
             let userConfirm = confirm("Are you sure to update following changes...?\n"+updates);
             if(userConfirm){
-                let updateSeriveResponse = 'OK'; //ajaxRequestBody("/student","PUT",student);
+                let updateSeriveResponse = ajaxRequestBody("/student","PUT",student);
                 if(updateSeriveResponse == "OK"){
                     alert('Update sucessfully..! ');
                     //Call refresh function

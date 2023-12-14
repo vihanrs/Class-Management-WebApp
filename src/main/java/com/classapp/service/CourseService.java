@@ -36,7 +36,7 @@ public class CourseService {
 	//update course
 	public String updateCourse(Course course) {
 		try {
-			course.setLastUpdateDateTime(LocalDateTime.now());
+			course.setLastUpdatedDateTime(LocalDateTime.now());
 			courseRepository.save(course);
 			return "OK";
 		} catch (Exception e) {
