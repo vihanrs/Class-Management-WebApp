@@ -1,6 +1,8 @@
 package com.classapp.domain;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,29 +27,29 @@ public class Course {
 	@Column(name = "id",unique = true)
 	private Integer id;
 	
-	@Column(name = "course_day")
+	@Column(name = "default_day")
 	@NotNull
-	private String courseDay;
+	private String defaultDay;
 	
 	@Column(name = "from_time")
 	@NotNull
-	private String fromTime;
+	private LocalTime fromTime;
 	
 	@Column(name = "to_time")
 	@NotNull
-	private String toTime;
+	private LocalTime toTime;
 	
-	@Column(name = "fee")
+	@Column(name = "default_fee")
 	@NotNull
-	private double fee;
+	private double defaultFee;
 	
 	@Column(name = "has_fixed_time")
 	@NotNull
 	private boolean hasFixedTime; 
 	
-	@Column(name = "active")
+	@Column(name = "is_active")
 	@NotNull
-	private boolean active;
+	private Boolean isActive;
 	
 	@Column(name = "added_datetime")
 	@NotNull

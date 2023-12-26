@@ -47,7 +47,7 @@ public class User {
 
 	@Column(name = "is_active")
 	@NotNull
-	private boolean isActive;
+	private Boolean isActive;
 
 	@Column(name = "added_datetime")
 	@NotNull
@@ -61,5 +61,5 @@ public class User {
 
 	@ManyToOne
 	@JoinColumn(name = "role_id",referencedColumnName = "id")
-	private Role role_id;
+	private Role roleId;
 }

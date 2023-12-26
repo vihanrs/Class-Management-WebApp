@@ -56,11 +56,11 @@ btnReset.addEventListener('click',()=>{
 });
 
 btnUpdate.addEventListener('click',()=>{
-    updateCourse();
+    updateStudent();
 });
 
 btnAdd.addEventListener('click',()=>{
-    addCourse();
+    addStudent();
 });
 
 // ********* RESET *********
@@ -92,7 +92,7 @@ const refreshStudentForm=()=>{
         }
     }
 
-    //set elements empty
+    //reset elements
     textCallingName.value = '';
     textFullName.value = '';
     radioGenderMale.checked = false;
@@ -110,8 +110,7 @@ const refreshStudentForm=()=>{
 
 //function for refresh table record
 const refreshStudentTable = ()=>{
-    //create array for store employee data list
-
+    //create array for store student data list
     students = ajaxGetRequest("/student/findall");
 
     //object count = table column count
@@ -122,13 +121,14 @@ const refreshStudentTable = ()=>{
                                 {property:'contactTwo',datatype:'String'} ]
     
     
-    //call the function (tableID,dataList,display property list, refill function name, delete function name, print function name, button visibilitys)
+    //call the function (tableID,dataList,display property list, refill function name, delete function name, print function name, button visibility)
     fillDataIntoTable(tblStudents,students,displayProperty,refillStudent,deleteStudent,printStudent,true);
 
 }
 
 // ********* TABLE OPERATIONS *********
-//delete course record function
+
+//delete student record function
 const deleteStudent = (rowObject,rowId) =>{
     const userConfirm = confirm('Are you sure to delete following student \n'+rowObject.callingName);
 
@@ -141,7 +141,7 @@ const deleteStudent = (rowObject,rowId) =>{
                 //call refresh function
                 refreshAll();
             }else{
-                alert('Save not sucessfully..! have some errors \n'+serverResponse);
+                alert('Delete not sucessfully..! have some errors \n'+serverResponse);
             }
     }
 }
@@ -172,6 +172,7 @@ const printStudent=(ob,rowId)=>{
 }
 
 // ********* FORM OPERATIONS *********
+
 const checkErrors = ()=>{
     //need to check all required property fields
 
@@ -229,13 +230,13 @@ const checkUpdates =()=>{
     return updates;
 }
 
-const addCourse = ()=>{
+const addStudent = ()=>{
     //1. need to check form errors ---> checkError() 
     let formErrors = checkErrors();
     if(formErrors == ''){
         // alert('No errors!');
         //2. need to get user confirmation
-        let userConfirm = window.confirm('Are you sure to add following course..?\n'
+        let userConfirm = window.confirm('Are you sure to add following student..?\n'
                                         + '\nFull Name : '+student.fullName
                                         + '\nCalling Name : '+student.callingName
                                         + '\nGender : '+student.gender
@@ -261,7 +262,7 @@ const addCourse = ()=>{
     }
 }
 
-const updateCourse = () =>{
+const updateStudent = () =>{
     let errors =  checkErrors();
     if(errors == ""){
         let updates = checkUpdates();

@@ -21,38 +21,38 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
-	
-	// create UI service [/employee -- return course UI]
-		@GetMapping
-		public ModelAndView StudentUI() {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("student.html");
-			return modelAndView;
-		}
 
-		// get all courses
-		@GetMapping(value = "/findall", produces = "application/json")
-		public List<Student> getAllCourses() {
-			return studentService.getAllStudents();
-		}
+	// create UI service [/student -- return course UI]
+	@GetMapping
+	public ModelAndView StudentUI() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("student.html");
+		return modelAndView;
+	}
 
-		// save course
-		@PostMapping
-		public String saveCourse(@RequestBody Student student) {
-			System.out.println(student.getCallingName());
-			return studentService.saveStudent(student);
-		}
+	// get all courses
+	@GetMapping(value = "/findall", produces = "application/json")
+	public List<Student> getAllCourses() {
+		return studentService.getAllStudents();
+	}
 
-		// update course
-		@PutMapping
-		public String updateCourse(@RequestBody Student student) {
-			return studentService.updateStudent(student);
-		}
+	// save course
+	@PostMapping
+	public String saveCourse(@RequestBody Student student) {
+		System.out.println(student.getCallingName());
+		return studentService.saveStudent(student);
+	}
 
-		// delete course
-		@DeleteMapping
-		public String deleteCourse(@RequestBody Student student) {
-			return studentService.deleteStudent(student);
-		}
+	// update course
+	@PutMapping
+	public String updateCourse(@RequestBody Student student) {
+		return studentService.updateStudent(student);
+	}
+
+	// delete course
+	@DeleteMapping
+	public String deleteCourse(@RequestBody Student student) {
+		return studentService.deleteStudent(student);
+	}
 
 }

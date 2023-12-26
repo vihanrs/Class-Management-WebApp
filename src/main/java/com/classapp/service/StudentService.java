@@ -26,7 +26,7 @@ public class StudentService {
 		public String saveStudent(Student student) {
 			System.out.println(student.getCallingName());
 			try {
-				student.setActive(true);
+				student.setIsActive(true);
 				student.setAddedDateTime(LocalDateTime.now());
 				studentRepository.save(student);
 				return "OK";
@@ -49,7 +49,7 @@ public class StudentService {
 		//delete student
 		public String deleteStudent(Student student) {
 			try {
-				student.setActive(false);
+				student.setIsActive(false);
 				student.setDeletedDateTime(LocalDateTime.now());
 				studentRepository.save(student);
 				return "OK";

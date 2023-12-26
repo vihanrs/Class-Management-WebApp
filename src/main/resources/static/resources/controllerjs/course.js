@@ -21,19 +21,19 @@ selectSubject.addEventListener('change',()=>{
 });
 
 selectDay.addEventListener('change',()=>{
-    selectFieldValidator(selectDay,'course','courseDay');
+    selectFieldValidator(selectDay,'course','defaultDay');
 });
 
 textCourseTimeFrom.addEventListener('keyup',()=>{
-    textFieldValidator(textCourseTimeFrom,courseTimePattern,'course','fromTime');
+    // textFieldValidator(textCourseTimeFrom,courseTimePattern,'course','fromTime');
 });
 
 textCourseTimeTo.addEventListener('keyup',()=>{
-    textFieldValidator(textCourseTimeTo,courseTimePattern,'course','toTime');
+    // textFieldValidator(textCourseTimeTo,courseTimePattern,'course','toTime');
 });
 
 textFee.addEventListener('keyup',()=>{
-    textFieldValidator(textFee,courseFeePattern,'course','fee');
+    textFieldValidator(textFee,courseFeePattern,'course','defaultFee');
 });
 
 checkboxFixedTime.addEventListener('change',()=>{
@@ -71,7 +71,6 @@ const refreshCourseForm=()=>{
         role_id: {
           id: 1,
           name: "Admin",
-          active: true
         }
     }
 
@@ -82,7 +81,7 @@ const refreshCourseForm=()=>{
     subjects = [{id:1,name:'English'},{id:2,name:'Sinhala'},{id:3,name:'Math'}];
     fillDataIntoSelect(selectSubject,'Select Subject',subjects,'name');
 
-    //set elements empty
+    //reset elements
     selectDay.value = '';
     textCourseTimeFrom.value = '';
     textCourseTimeTo.value = '';
@@ -100,13 +99,7 @@ const refreshCourseForm=()=>{
 
 //function for refresh table record
 const refreshCourseTable = ()=>{
-    //create array for store employee data list
-    // courses = [
-    //     {id:1,gradeId:{id:1,name:'Grade 9'},subjectId:{id:1,name:'English'},courseDay:'Tuesday',fromTime:'08:00 AM',toTime:'10.30 AM',fee:'1300.00',isFixedTime:false},
-    //     {id:2,gradeId:{id:2,name:'Grade 10'},subjectId:{id:2,name:'Sinhala'},courseDay:'Monday',fromTime:'10:00 AM',toTime:'11.30 AM',fee:'1500.00',isFixedTime:true},
-    //     {id:3,gradeId:{id:2,name:'Grade 10'},subjectId:{id:3,name:'Math'},courseDay:'Friday',fromTime:'06:00 PM',toTime:'08:00 PM',fee:'2500.00',isFixedTime:false},
-    //     {id:4,gradeId:{id:3,name:'Grade 11'},subjectId:{id:2,name:'Sinhala'},courseDay:'Sunday',fromTime:'02:00 PM',toTime:'04:00 PM',fee:'1500.00',isFixedTime:true}
-    // ];
+    //create array for store course data list
     courses = ajaxGetRequest("/course/findall");
 
     //object count = table column count
@@ -130,6 +123,7 @@ const getSubject=(rowObject)=>{
 }
 
 // ********* TABLE OPERATIONS *********
+
 //delete course record function
 const deleteCourse = (rowObject,rowId) =>{
     const userConfirm = confirm('Are you sure to delete following class \n'+rowObject.gradeId.name+' - '+rowObject.subjectId.name);
@@ -146,7 +140,7 @@ const deleteCourse = (rowObject,rowId) =>{
                 //Call form refresh function
                 refreshCourseForm();
             }else{
-                alert('Save not sucessfully..! have some errors \n'+serverResponse);
+                alert('Delete not sucessfully..! have some errors \n'+serverResponse);
             }
     }
 }
@@ -156,10 +150,10 @@ const refillCourse=(rowObject,rowId)=>{
     course = JSON.parse(JSON.stringify(rowObject));
     oldcourse = JSON.parse(JSON.stringify(rowObject));
 
-    selectDay.value = course.courseDay;
+    selectDay.value = course.defaultDay;
     textCourseTimeFrom.value = course.fromTime;
     textCourseTimeTo.value = course.toTime;
-    textFee.value = course.fee;
+    textFee.value = course.defaultFee;
 
     if(course.hasFixedTime){
         checkboxFixedTime.checked = true;
@@ -182,6 +176,7 @@ const printCourse=(ob,rowId)=>{
 }
 
 // ********* FORM OPERATIONS *********
+
 const checkErrors = ()=>{
     //need to check all required property fields
     let error = '';
@@ -193,19 +188,19 @@ const checkErrors = ()=>{
         error = error+'Please Select Subject...!\n';
         selectSubject.style.border = '2px solid red';
     }
-    if(course.courseDay == null){
+    if(course.defaultDay == null){
         error = error+'Please Select Day...!\n';
         selectDay.style.border = '2px solid red';
     }
-    if(course.fromTime == null){
-        error = error+'Please Enter From time...!\n';
-        textCourseTimeFrom.style.border = '2px solid red';
-    }
-    if(course.toTime == null){
-        error = error+'Please Enter To time...!\n';
-        textCourseTimeTo.style.border = '2px solid red';
-    }
-    if(course.fee == null){
+    // if(course.fromTime == null){
+    //     error = error+'Please Enter From time...!\n';
+    //     textCourseTimeFrom.style.border = '2px solid red';
+    // }
+    // if(course.toTime == null){
+    //     error = error+'Please Enter To time...!\n';
+    //     textCourseTimeTo.style.border = '2px solid red';
+    // }
+    if(course.defaultFee == null){
         error = error+'Please Enter Fee...!\n';
         textFee.style.border = '2px solid red';
     }
@@ -224,7 +219,7 @@ const checkUpdates =()=>{
         updates = updates + "Subject has changed \n";
     }
 
-    if(oldcourse.courseDay != course.courseDay){
+    if(oldcourse.defaultDay != course.defaultDay){
         updates = updates + "Class Day has changed \n";
     }
 
@@ -232,7 +227,7 @@ const checkUpdates =()=>{
         updates = updates + "Class Time has changed \n";
     }
 
-    if(oldcourse.fee != course.fee){
+    if(oldcourse.defaultFee != course.defaultFee){
         updates = updates + "Class Fee has changed \n";
     }
 
@@ -252,10 +247,10 @@ const addCourse = ()=>{
         let userConfirm = window.confirm('Are you sure to add following course..?\n'
                                         + '\nGrade : '+course.gradeId.name 
                                         + '\nSubject : '+course.subjectId.name
-                                        + '\nClass Day : '+course.courseDay
+                                        + '\nClass Day : '+course.defaultDay
                                         + '\nFrom : '+course.fromTime
                                         + '\nTo : '+course.toTime
-                                        + '\nFee : '+course.fee
+                                        + '\nFee : '+course.defaultFee
                                         + '\nFixed Date : '+course.hasFixedTime);
 
         if(userConfirm){

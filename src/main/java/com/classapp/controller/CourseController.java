@@ -21,7 +21,7 @@ public class CourseController {
 	@Autowired // inject CourseService object into courseService variable
 	private CourseService courseService;
 
-	// create UI service [/employee -- return course UI]
+	// create UI service [/course -- return course UI]
 	@GetMapping
 	public ModelAndView CourseUI() {
 		ModelAndView modelAndView = new ModelAndView();

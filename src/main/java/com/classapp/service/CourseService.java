@@ -1,6 +1,7 @@
 package com.classapp.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class CourseService {
 	//save new course
 	public String saveCourse(Course course) {
 		try {
-			course.setActive(true);
+			course.setFromTime(LocalTime.of(8, 30, 0));
+			course.setToTime(LocalTime.of(10, 30, 0));
+			course.setIsActive(true);
 			course.setAddedDateTime(LocalDateTime.now());
 			courseRepository.save(course);
 			return "OK";
@@ -47,7 +50,7 @@ public class CourseService {
 	//delete course
 	public String deleteCourse(Course course) {
 		try {
-			course.setActive(false);
+			course.setIsActive(false);
 			course.setDeletedDateTime(LocalDateTime.now());
 			courseRepository.save(course);
 			return "OK";
