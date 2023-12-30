@@ -32,26 +32,25 @@ public class StudentController {
 
 	// get all courses
 	@GetMapping(value = "/findall", produces = "application/json")
-	public List<Student> getAllCourses() {
+	public List<Student> getAllStudents() {
 		return studentService.getAllStudents();
 	}
 
 	// save course
 	@PostMapping
-	public String saveCourse(@RequestBody Student student) {
-		System.out.println(student.getCallingName());
+	public String saveStudent(@RequestBody Student student) {
 		return studentService.saveStudent(student);
 	}
 
 	// update course
 	@PutMapping
-	public String updateCourse(@RequestBody Student student) {
+	public String updateStudent(@RequestBody Student student) {
 		return studentService.updateStudent(student);
 	}
 
 	// delete course
 	@DeleteMapping
-	public String deleteCourse(@RequestBody Student student) {
+	public String deleteStudent(@RequestBody Student student) {
 		return studentService.deleteStudent(student);
 	}
 

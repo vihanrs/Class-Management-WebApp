@@ -30,7 +30,7 @@ const fillDataIntoTable=(tableID,dataList,displayProperty,editButtonFunction,del
 
         const buttonEdit = document.createElement('button');
         buttonEdit.className = 'btn btn-outline-warning';
-        buttonEdit.innerHTML = '<i class = "fa-solid fa-edit"></i>Edit';
+        buttonEdit.innerHTML = '<i class = "fa-solid fa-edit"></i>';
 
         buttonEdit.onclick = () =>{
             console.log("Edit Event" + item.id);
@@ -39,7 +39,7 @@ const fillDataIntoTable=(tableID,dataList,displayProperty,editButtonFunction,del
 
         const buttonDelete = document.createElement('button');
         buttonDelete.className = 'btn btn-outline-danger ms-1 me-1';
-        buttonDelete.innerHTML = '<i class = "fa-solid fa-trash"></i>Delete';
+        buttonDelete.innerHTML = '<i class = "fa-solid fa-trash"></i>';
         
         buttonDelete.onclick = () =>{
             // console.log("Delete Event" + item.id);
@@ -48,7 +48,7 @@ const fillDataIntoTable=(tableID,dataList,displayProperty,editButtonFunction,del
         
         const buttonPrint = document.createElement('button');
         buttonPrint.className = 'btn btn-outline-info';
-        buttonPrint.innerHTML = '<i class = "fa-solid fa-print"></i>Print';
+        buttonPrint.innerHTML = '<i class = "fa-solid fa-print"></i>';
         
         buttonPrint.onclick = () =>{
             console.log("Print Event" + item.id);

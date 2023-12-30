@@ -1,6 +1,12 @@
 //define function for ajax request (GET)
-const ajaxGetRequest=(url) =>{
+const ajaxGetRequest=(url, params) =>{
     let serverResponse;
+
+    // Append query parameters to the URL
+    if (params) {
+        url += '?' + $.param(params);
+    }
+
     $.ajax(url,{
 		async : false,
 		type : 'GET',
@@ -53,10 +59,37 @@ const fillDataIntoSelect = (fieldId,message,dataList,property,selectedValue)=>{
     for (const data of dataList) {
         let option = document.createElement('option');
         option.value = JSON.stringify(data); //convert into JSON string
-        option.innerText = data[property];
-        if(selectedValue == data[property]){
+
+        let value = "";
+        if(property.includes(".")){
+            if(property.includes(",")){
+                value = getPropertiesConcatenated(data, property);
+            }else{
+                value = getPropertyNested(data, property);
+            }
+        }else{
+            value = data[property];
+        }
+
+        option.innerText = value;
+        if(selectedValue == value){
             option.selected = 'selected';
         }
         fieldId.appendChild(option);
     }
 }
+
+// Function to access nested properties
+const getPropertyNested = (object, property) => {
+    const properties = property.split('.');
+    return properties.reduce((obj, prop) => obj && obj[prop], object);
+};
+
+// Function to access and concatenate multiple nested properties
+const getPropertiesConcatenated = (object, properties) => {
+    const propertyArray = properties.split(',');
+    const propertyValues = propertyArray.map(property => getPropertyNested(object, property));
+    return propertyValues.join(' - '); // Adjust the separator as needed
+};
+
+

@@ -25,11 +25,11 @@ selectDay.addEventListener('change',()=>{
 });
 
 textCourseTimeFrom.addEventListener('keyup',()=>{
-    // textFieldValidator(textCourseTimeFrom,courseTimePattern,'course','fromTime');
+    textFieldValidator(textCourseTimeFrom,courseTimePattern,'course','fromTime');
 });
 
 textCourseTimeTo.addEventListener('keyup',()=>{
-    // textFieldValidator(textCourseTimeTo,courseTimePattern,'course','toTime');
+    textFieldValidator(textCourseTimeTo,courseTimePattern,'course','toTime');
 });
 
 textFee.addEventListener('keyup',()=>{
@@ -75,10 +75,12 @@ const refreshCourseForm=()=>{
     }
 
     //get data for dynamic lists
-    grades = [{id:1,name:'Grade 9'},{id:2,name:'Grade 10'},{id:3,name:'Grade 11'}];
+    // grades = [{id:1,name:'Grade 9'},{id:2,name:'Grade 10'},{id:3,name:'Grade 11'}];
+    grades = ajaxGetRequest("/grade/findall");
     fillDataIntoSelect(selectGrade,'Select Grade',grades,'name');
 
-    subjects = [{id:1,name:'English'},{id:2,name:'Sinhala'},{id:3,name:'Math'}];
+    // subjects = [{id:1,name:'English'},{id:2,name:'Sinhala'},{id:3,name:'Math'}];
+    subjects = ajaxGetRequest("/subject/findall");
     fillDataIntoSelect(selectSubject,'Select Subject',subjects,'name');
 
     //reset elements

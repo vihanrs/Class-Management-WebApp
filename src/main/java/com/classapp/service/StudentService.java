@@ -19,12 +19,11 @@ public class StudentService {
 	
 	//get all students
 	public List<Student> getAllStudents(){
-		return studentRepository.findAll(Sort.by(Direction.DESC, "id"));
+		return studentRepository.findByIsActiveTrueOrderByIdDesc();
 	}
 	
 	//save new student
 		public String saveStudent(Student student) {
-			System.out.println(student.getCallingName());
 			try {
 				student.setIsActive(true);
 				student.setAddedDateTime(LocalDateTime.now());

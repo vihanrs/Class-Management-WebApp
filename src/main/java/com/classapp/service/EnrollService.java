@@ -1,11 +1,14 @@
 package com.classapp.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.classapp.domain.Course;
 import com.classapp.domain.Enroll;
+import com.classapp.domain.Student;
 import com.classapp.repository.EnrollRepository;
 
 @Service
@@ -28,12 +31,32 @@ public class EnrollService {
 	//delete enrollment
 	public String deleteEnrollment(Enroll enroll) {
 		try {
-			enroll.setStatus("Deleted");
+			enroll.setStatus("Removed");
 			enrollRepository.save(enroll);
 			return "OK";
 		} catch (Exception e) {
 			return "Enrollment Delete not Completed "+e.getMessage();
 		}
+	}
+	
+	//update enrollment (only fee)
+	public String updateEnrollment(Enroll enroll) {
+		try {
+			enrollRepository.save(enroll);
+			return "OK";
+		} catch (Exception e) {
+			return "Enrollment Update not Completed "+e.getMessage();
+		}
+	}
+	
+	//get course list for the selected student
+	public List<Enroll> getCourseListByStudent(Student student){
+		return enrollRepository.findByStudentIdAndStatusNot(student,"Removed");
+	}
+	
+	//get student list for the selected course
+	public List<Enroll> getStudentListByCourse(Course course){
+		return enrollRepository.findByCourseIdAndStatusNot(course,"Removed");
 	}
 
 }

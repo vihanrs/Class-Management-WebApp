@@ -33,11 +33,11 @@ public class Course {
 	
 	@Column(name = "from_time")
 	@NotNull
-	private LocalTime fromTime;
+	private String fromTime;
 	
 	@Column(name = "to_time")
 	@NotNull
-	private LocalTime toTime;
+	private String toTime;
 	
 	@Column(name = "default_fee")
 	@NotNull

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollments</title>
+    <!-- link bootstrap css -->
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" />
+    <!-- link bootstrap js -->
+    <script src="resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- fontawsome -->
+    <link rel="stylesheet" href="resources/fontawesome-6.4.2/css/all.css" />
+
+    <!-- button css -->
+    <link rel="stylesheet" href="resources/css/button.css" />
+
+    <!-- link jquery js file -->
+    <script src="resources/js/jquery.js"></script>
+    
+    <!-- link tablefunction js file -->
+    <script src="resources/js/validation.js"></script>
+    <!-- link tablefunction js file -->
+    <script src="resources/js/tablefunctions.js"></script>
+    <!-- link common js file -->
+    <script src="resources/js/common.js"></script>
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- title area start  -->
+        <div class="row p-3">
+            <div class="col-12 text-center title-div">
+            <h2 class="h2">
+                <i class="fa-solid fa-user-tie pe-3"></i>Enrollments
+            </h2>
+            </div>
+        </div>
+        <div class="row p-3 ">
+        <!-- form area start -->
+            <div class="col-md-4">
+                <form onsubmit="return false">
+                    <!-- student  -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="selectStudent" class="form-label form-label-inline fw-bold">
+                                Student : <span class="text-danger"> * </span>
+                            </label>
+                            <select id="selectStudent" class="form-select" required>
+                                <option value="" selected disabled>Select Student</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- course  -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="selectCourse" class="form-label form-label-inline fw-bold">
+                                Class : <span class="text-danger"> * </span>
+                            </label>
+                            <select id="selectCourse" class="form-select" required>
+                                <option value="" selected disabled>Select Class</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- course fee  -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="textFee" class="form-label fw-bold">
+                                Class Fee Rs.: <span class="text-danger"> * </span>
+                            </label>
+                            <input type="text" placeholder="0000.00" class="form-control" id="textFee" required>
+                        </div>
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="row mt-2">
+                        <div class="col-md-4 text-center mt-2">
+                            <button type="button" class="btn fw-bold btn-clear" id="btnReset"><i class="fa-solid fa-recycle me-2"></i>Clear</button>
+                        </div>
+                        <div class="col-lg-4 text-center mt-2">
+                            <button type="submit" class="btn fw-bold btn-update" id="btnUpdate"><i class="fa-solid fa-gears me-2"></i>Update</button>
+                        </div>
+                        <div class="col-md-4 text-center mt-2">
+                            <button type="submit" class="btn fw-bold btn-add" id="btnAdd"><i class="fa-solid fa-square-plus me-2"></i>Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- form area end -->
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <!-- student  -->
+                        <div class="col-md-4">
+                            <label for="selectStudentSearch" class="form-label form-label-inline fw-bold">
+                                Student : </span>
+                            </label>
+                            <select id="selectStudentSearch" class="form-select" required>
+                                <option value="" selected disabled>Select Student</option>
+                            </select>
+                        </div>
+                         <!-- course  -->
+                        <div class="col-md-4">
+                            <label for="selectCourseSearch" class="form-label form-label-inline fw-bold">
+                                Class : </span>
+                            </label>
+                            <select id="selectCourseSearch" class="form-select" required>
+                                <option value="" selected disabled>Select Class</option>
+                            </select>
+                        </div>
+                        <!-- search button  -->
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-outline-info mt-4" id="btnSearch"> <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"> <!-- style="display: none;" -->
+                    <table class="table table-striped table-bordered text-center" id="tblEnrollStudent" >
+                        <thead class="table-info">
+                            <tr>
+                                <th> # </th>
+                                <th> Student Name </th>
+                                <th> Enrolled Date</th>
+                                <th class="modify-button col-4"> Modify</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Vihan</td>
+                                <td>2023-12-12</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-success"> <i class="fa-solid fa-eye"></i></button>
+                                    <button type="button" class="btn btn-outline-warning"><i class="fa-solid fa-pen-square"></i></button>
+                                    <button type="button" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-striped table-bordered text-center" id="tblEnrollClass">
+                        <thead class="table-info">
+                            <tr>
+                                <th> # </th>
+                                <th> Class </th>
+                                <th> Enrolled Date</th>
+                                <th class="modify-button col-4"> Modify</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Grade 10 English</td>
+                                <td>2023-12-12</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-success"> <i class="fa-solid fa-eye"></i></button>
+                                    <button type="button" class="btn btn-outline-warning"><i class="fa-solid fa-pen-square"></i></button>
+                                    <button type="button" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- link student js file -->
+    <script src="resources/controllerjs/enroll.js"></script>
+</body>
+</html>
